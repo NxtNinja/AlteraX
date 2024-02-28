@@ -1,0 +1,17 @@
+{
+  "name": "social-network-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "directus start",
+    "migrate": "directus database migrate:latest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "directus": "^10.9.3",
+    "sqlite3": "^5.1.7"
+  }
+}
