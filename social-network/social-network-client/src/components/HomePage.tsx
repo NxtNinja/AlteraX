@@ -72,7 +72,7 @@ const HomePage = () => {
                     <Layout>
                         <div className="md:ml-[15%] md:w-[85%] w-full space-y-12 md:p-6 p-2 border h-[100dvh] overflow-auto">
                             <div className="flex w-full justify-between items-center">
-                                <div className="text-4xl font-bold">Latest Posts</div>
+                                <div className="md:text-4xl text-2xl font-bold">Latest Posts</div>
                                 <div className="flex items-center gap-2">
                                   <p className="">Welcome, <span className="font-bold">{data.first_name}</span></p>
                                     <Avatar size="lg" src={`http://localhost:8055/assets/${data?.avatar}`}/>
@@ -82,7 +82,7 @@ const HomePage = () => {
                                 {
                                   post_data.length > 0 ? 
                                     post_data?.map(item => {
-                                        return <PostCard key={item.id} user={data} info={item}/>
+                                        return <PostCard key={item.id} user={data} info={item} isDiscover={false}/>
                                     }) : 
                                     <div className="w-full">
                                       <NoDataState/>

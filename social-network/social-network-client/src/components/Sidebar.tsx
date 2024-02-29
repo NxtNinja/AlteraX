@@ -1,7 +1,7 @@
 import { Button, Divider } from "@nextui-org/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { MdAdd, MdAddCircle, MdAddCircleOutline, MdDashboard, MdHomeFilled } from "react-icons/md";
+import { MdAdd, MdAddCircle, MdAddCircleOutline, MdDashboard, MdExplore, MdHomeFilled, MdSearch } from "react-icons/md";
 import { MdCategory } from "react-icons/md";
 
 import { IoAddCircleSharp, IoLogOutOutline, IoSettings } from "react-icons/io5";
@@ -20,6 +20,16 @@ const Sidebar = () => {
       path: "/", 
       name: "Home", 
       icon: <MdHomeFilled size={20} /> 
+    },
+    { 
+      path: "/search", 
+      name: "Search", 
+      icon: <MdSearch size={20} /> 
+    },
+    { 
+      path: "/discover", 
+      name: "Discover", 
+      icon: <MdExplore size={20} /> 
     },
     {
       path: "/create",

@@ -56,40 +56,60 @@ export default function EditProfileModal({isOpen, onOpenChange, user}: {isOpen: 
         
         const formData = new FormData();
         if (selectedImage !== undefined) {   
-            // formData.append("post_title", data.post_title);
             formData.append("post_img", selectedImage);
-            
             try {
-            const response_image = await axios.post(`http://localhost:8055/files`, formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data"
-                }
-            });
-            console.log(response_image.data);
+                const response_image = await axios.post(`http://localhost:8055/files`, formData, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data"
+                    }
+                });
+                console.log(response_image.data);
             
             
-            const userData = {
-                "avatar": response_image.data.data.id,
-                "first_name": data.first_name,
-                "last_name": data.last_name,
-                "email": data.email,
-                "title": data.title,
-                "description": data.description
-            };
+                const userData = {
+                    "avatar": response_image.data.data.id,
+                    "first_name": data.first_name,
+                    "last_name": data.last_name,
+                    "email": data.email,
+                    "title": data.title,
+                    "description": data.description
+                };
             
-            const response_post = await axios.patch(`http://localhost:8055/users/${user.id}`, userData,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            })
-            console.log(response_post);
+                const response_post = await axios.patch(`http://localhost:8055/users/${user.id}`, userData,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        }
+                })
+                console.log(response_post);
             
-            queryClient.invalidateQueries({queryKey: ['current-user']})
-        } catch (error) {
-            console.error("Error:", error);
-        }
+                queryClient.invalidateQueries({queryKey: ['current-user']})
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        } else {
+            try {
+                const userData = {
+                    "first_name": data.first_name,
+                    "last_name": data.last_name,
+                    "email": data.email,
+                    "title": data.title,
+                    "description": data.description
+                };
+            
+                const response_post = await axios.patch(`http://localhost:8055/users/${user.id}`, userData,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        }
+                })
+                console.log(response_post);
+            
+                queryClient.invalidateQueries({queryKey: ['current-user']})
+            } catch (error) {
+                console.error("Error:", error);
+            }
         }
     }
   return (

@@ -21,7 +21,7 @@ type Comment = {
 }
 
 
-const PostCard = ({user, info}: {user: Data, info: Post}) => {
+const PostCard = ({user, info, isDiscover}: {user: Data, info: Post, isDiscover: boolean}) => {
     const router = useRouter()
     const {
         register,
@@ -144,7 +144,7 @@ const PostCard = ({user, info}: {user: Data, info: Post}) => {
     
     return (
         <>
-            <Card className="py-4 space-y-3">
+            <Card className="py-4 space-y-3 h-fit">
                 <CardHeader className="pb-0 pt-2 px-4 flex items-center justify-between">
                     <div onClick={() => router.push(`/userProfile/${info.user_created}`)} className="flex items-center cursor-pointer gap-2">
                         <Avatar src={`http://localhost:8055/assets/${data?.avatar}`}/>
@@ -175,59 +175,62 @@ const PostCard = ({user, info}: {user: Data, info: Post}) => {
                         <img src={`http://localhost:8055/assets/${info.post_img}`} className="rounded-xl mt-auto object-cover" alt="" />
                     </div>
                 </CardBody>
-                <CardFooter className="pt-2 px-4 flex flex-col gap-4">
-                    <div className="flex w-full justify-between items-center">
-                        {
-                            liked ? 
+                {
+                    !isDiscover &&
+                    <CardFooter className="pt-2 px-4 flex flex-col gap-4">
+                        <div className="flex w-full justify-between items-center">
+                            {
+                                liked ? 
+                                <div className="flex gap-2 items-center">
+                                    <MdThumbUp size={30} className="text-blue-500"/>
+                                    <p className="">{matched_Likes?.length}</p>
+                                </div> : 
+                                <div className="flex gap-2 items-center">
+                                    <MdOutlineThumbUp onClick={makePostLike} className="cursor-pointer" size={30}/>
+                                    <p className="">{matched_Likes?.length}</p>
+                                </div>
+                            }
                             <div className="flex gap-2 items-center">
-                                <MdThumbUp size={30} className="text-blue-500"/>
-                                <p className="">{matched_Likes?.length}</p>
-                            </div> : 
-                            <div className="flex gap-2 items-center">
-                                <MdOutlineThumbUp onClick={makePostLike} className="cursor-pointer" size={30}/>
-                                <p className="">{matched_Likes?.length}</p>
+                                <LiaCommentSolid className="cursor-pointer" onClick={() => setOpenComment(prev => !prev)} size={30}/>
+                                <p className="">{comments?.length}</p>
                             </div>
-                        }
-                        <div className="flex gap-2 items-center">
-                            <LiaCommentSolid className="cursor-pointer" onClick={() => setOpenComment(prev => !prev)} size={30}/>
-                            <p className="">{comments?.length}</p>
                         </div>
-                    </div>
-                    {
-                        openComment && (
-                            <div className="flex flex-col w-full">
-                                <div className="h-48 p-3 overflow-y-auto flex border w-full flex-col gap-3">
-                                    <p className="w-full font-bold">Comments</p>
-                                    <Divider/>
-                                    <div className="flex flex-col gap-4">
+                        {
+                            openComment && (
+                                <div className="flex flex-col w-full">
+                                    <div className="h-48 p-3 overflow-y-auto flex border w-full flex-col gap-3">
+                                        <p className="w-full font-bold">Comments</p>
+                                        <Divider/>
+                                        <div className="flex flex-col gap-4">
+                                            {
+                                                comments?.map(item => {
+                                                    return <CommentCard key={item.id} info={item}/>
+                                                })
+                                            }
+                                        </div>
+                                    </div>
+                                    <form onSubmit={handleSubmit(createComment)}>
+                                        <Input
                                         {
-                                            comments?.map(item => {
-                                                return <CommentCard key={item.id} info={item}/>
+                                            ...register("comment", {
+                                                required: {
+                                                    value: true,
+                                                    message: "This filed is required"
+                                                },
+                                                pattern: {
+                                                    value: /^[\p{L}\p{N}\s\d\s.:;!?()[\]{}'"`*_#+=<>$%^&|\\/,@-]+$/u,
+                                                    message: "Validation failed"
+                                                }
                                             })
                                         }
-                                    </div>
+                                        placeholder="Write a comment" className="" endContent={<MdSend size={20} type="submit"/>} radius="none" variant="faded"/>
+                                    </form>
                                 </div>
-                                <form onSubmit={handleSubmit(createComment)}>
-                                    <Input
-                                    {
-                                        ...register("comment", {
-                                            required: {
-                                                value: true,
-                                                message: "This filed is required"
-                                            },
-                                            pattern: {
-                                                value: /^[\p{L}\p{N}\s\d\s.:;!?()[\]{}'"`*_#+=<>$%^&|\\/,@-]+$/u,
-                                                message: "Validation failed"
-                                            }
-                                        })
-                                    }
-                                    placeholder="Write a comment" className="" endContent={<MdSend size={20} type="submit"/>} radius="none" variant="faded"/>
-                                </form>
-                            </div>
-                        )
-                    }
-                    
-                </CardFooter>
+                            )
+                        }
+                        
+                    </CardFooter>
+                }
             </Card>
         </>
     );

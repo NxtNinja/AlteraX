@@ -73,14 +73,14 @@ const Profile = () => {
                 <Layout>
                     <div className="md:ml-[15%] md:w-[85%] w-full space-y-12 md:p-6 p-2 border h-[100dvh] overflow-auto">
                         <div className="flex w-full justify-between items-center">
-                            <div className="text-4xl font-bold">My Profile</div>
+                            <div className="md:text-4xl text-2xl font-bold">My Profile</div>
                             <div className="flex items-center gap-2">
                                 <p className="">Welcome, <span className="font-bold">{current_user.first_name}</span></p>
                                 <Avatar size="lg" src={`http://localhost:8055/assets/${current_user?.avatar}`}/>
                             </div>
                         </div>
                         <div className="flex flex-col gap-10">
-                            <div className="flex gap-3 items-center">
+                            <div className="flex md:flex-row flex-col gap-3 items-start">
                                 <div className="flex flex-col gap-2">
                                     <Avatar src={`http://localhost:8055/assets/${current_user?.avatar}`} className="w-48 h-48"/>
                                     <Button onPress={onOpen} color="primary" radius="sm">Edit profile</Button>
@@ -111,7 +111,7 @@ const Profile = () => {
                                 <div className="flex flex-col md:w-2/3 w-full gap-3">
                                 {
                                     post_data?.map(item => {
-                                        return <PostCard key={item.id} user={current_user} info={item}/>
+                                        return <PostCard key={item.id} user={current_user} info={item} isDiscover={false}/>
                                     })
                                 }
                                 </div>
